@@ -139,7 +139,6 @@ export default {
     width: 240px;
     height: 110%;
     position: fixed;
-    /* opacity: 0.3; */
     top: -30px;
     right: 0;
     z-index: 20;

@@ -1,4 +1,5 @@
 <template >
+    <div id="back"></div>
     <div id="hyezomemo">
         
         <!-- 모달창 UI -->
@@ -225,10 +226,18 @@ export default {
     padding-top: 30px;
     overflow: auto;
     text-align: center;
+    position: fixed;
+}
+#back {
+    position: fixed;
+    height: 100%;
+    width: 100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-image: url(../assets/Traub-64.jpg);
+    filter:  brightness(85%);
+    z-index: -1;
 }
 
 /* 메모 UI */

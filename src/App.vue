@@ -13,7 +13,7 @@
 export default {
     name: "App",
     components: {
-        // MemoAll,    라우터로 연결
+        // MemoAll,    라우터로 연결해놔서 끔
     },
 
     data() {  /* 데이터 시작돼요 */
