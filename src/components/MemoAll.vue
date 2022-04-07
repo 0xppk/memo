@@ -80,8 +80,6 @@ export default {
             삭제인덱스: "",
             할일알림: false,
             할일체크: [],
-            할일인덱스: [],
-            index: 0,
         };
     } /* 데이터 끝나요 */,
 
@@ -106,12 +104,9 @@ export default {
             if (this.메모인풋 !== "") {
                 this.할일.push(this.메모인풋);
                 this.할일체크.push(0);
-                this.할일인덱스.push(this.index);
-                this.index++;
                 this.할일알림 = true;
                 this.메모인풋 = "";
                 this.투두스토리지저장();
-                // 취소선 기능 추가중..
             } else {
                 alert("글 남겨");
             }
@@ -157,7 +152,6 @@ export default {
                 this.삭제인덱스 = "";
             }, 400);
         },
-
         // # 필터 함수
         역순정렬() {
             this.메모.reverse();
@@ -194,11 +188,7 @@ export default {
             this.할일 = JSON.parse(localStorage.getItem("todo"));
             this.할일체크 = JSON.parse(localStorage.getItem("todoSwitch"));
         }
-        for ( let i=0; i<this.할일체크.length; i++ ){
-            if(this.할일체크[i]==1 && this.할일체크.length){
-                document.querySelector(`.todo-${i}`).style.textDecoration = 'line-through';
-            }
-        }
+
     } /* 마운티드 끝나요 */,
 
 
