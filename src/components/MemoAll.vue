@@ -1,7 +1,10 @@
 <template >
     <div id="back"></div>
     <div id="hyezomemo">
-        
+
+        <!-- 로그인 커튼 -->
+
+
         <!-- 모달창 UI -->
         <Modal
             :삭제인덱스="삭제인덱스"
@@ -11,12 +14,12 @@
         />
 
         <!-- 숨김바 -->
-        <Topbar :닉네임인풋="닉네임인풋" :인사말시작="인사말시작"  :할일알림="할일알림"  :할일="할일"  :할일체크="할일체크"  @할일삭제="할일삭제버튼(i)" />
+        <Topbar :닉네임인풋="닉네임인풋" :인사말시작="인사말시작"  :할일알림="할일알림"  :할일="할일"  :할일스위치="할일스위치" :라인쓰루="라인쓰루" @할일삭제="할일삭제버튼($event)" />
 
         <!-- 다크모드 스위치 -->
         <DarkMode />
 
-        <!-- 컴퍼넌트들 -->
+        <!-- 메모 보드 -->
         <Login
             :닉네임인풋사라짐="닉네임인풋사라짐"
             @인사말="인사말시작 = true; 닉네임인풋사라짐 = true;"
@@ -29,7 +32,7 @@
             @메모입력="메모인풋 = $event"
             @메모추가="메모추가"
             @할일="할일추가"
-            @할일삭제="할일삭제버튼(i)"
+            @할일삭제="할일삭제버튼($event)"
             @수정="수정($event)"
             @메모삭제="모달창열기($event); 삭제인덱스 = $event;"
             @초기화="모달창열기"
@@ -42,7 +45,6 @@
     </div>
 </template>
 <script>
-// Todo      7) 그리드 레이아웃 말고,,, 모바일     
 // # Import 구역
 import Topbar from "./Topbar.vue";
 import Modal from "./Modal.vue";
@@ -69,18 +71,14 @@ export default {
             닉네임인풋사라짐: false,
             인사말시작: false,
             메모인풋: "",
-            메모: [
-                "자고로 메모는 바로바로 수정되고",
-                "저장돼야 쓸모가 있는 것",
-                "폰트는 강원교육체",
-            ],
+            메모: [],
             할일: [],
-            수정인풋: "",
             로컬저장소: [],
             할일저장소: [],
-            삭제인덱스: "",
+            삭제인덱스: null,
             할일알림: false,
-            할일체크: [],
+            할일스위치: [],
+            라인쓰루: [],
         };
     } /* 데이터 끝나요 */,
 
@@ -104,7 +102,8 @@ export default {
         할일추가() {
             if (this.메모인풋 !== "") {
                 this.할일.push(this.메모인풋);
-                this.할일체크.push(0);
+                this.할일스위치.push(0);
+                this.라인쓰루.push('none');
                 this.할일알림 = true;
                 this.메모인풋 = "";
                 this.투두스토리지저장();
@@ -114,22 +113,24 @@ export default {
         },
         삭제확인버튼(i) {
             this.메모.splice(i, 1);
-            var 임시저장소 = JSON.stringify(this.메모);
-            localStorage.setItem("memo", 임시저장소);
+            localStorage.setItem("memo", JSON.stringify(this.메모));
             document.querySelector("#send").disabled = true;
             this.모달창닫기();
         },
         할일삭제버튼(굳) {
             this.할일.splice(굳, 1);
-            this.할일체크.splice(굳, 1);
-            var 임시저장소 = JSON.stringify(this.할일);
-            localStorage.setItem("todo", 임시저장소);
-            localStorage.setItem("todoSwitch", JSON.stringify(this.할일체크));
+            this.할일스위치.splice(굳, 1);
+            this.라인쓰루.splice(굳, 1);
+            localStorage.setItem("todo", JSON.stringify(this.할일));
+            localStorage.setItem("todoSwitch", JSON.stringify(this.할일스위치));
+            localStorage.setItem("lineThrough", JSON.stringify(this.라인쓰루));
         },
         리셋확인버튼() {
             this.모달창닫기();
             this.메모 = [];
             this.할일 = [];
+            this.할일스위치 = [];
+            this.라인쓰루 = [];
             this.닉네임인풋 = "";
             this.인사말시작 = false,
             this.닉네임인풋사라짐 = false,
@@ -137,10 +138,9 @@ export default {
             document.querySelector(".square").classList.remove("square-hide");
         },
         수정(i) {
-            this.수정인풋 = document.querySelectorAll("textarea")[i].value;
-            this.메모.splice(i, 1, this.수정인풋);
-            var 임시저장소 = JSON.stringify(this.메모);
-            localStorage.setItem("memo", 임시저장소);
+            var 수정인풋 = document.querySelectorAll("textarea")[i].value;
+            this.메모.splice(i, 1, 수정인풋);
+            localStorage.setItem("memo", JSON.stringify(this.메모));
         },
 
         // # 모달창 함수
@@ -150,7 +150,7 @@ export default {
         모달창닫기() {
             document.querySelector(".black-bg").classList.remove("modal-show");
             setTimeout(() => {
-                this.삭제인덱스 = "";
+                this.삭제인덱스 = null;
             }, 400);
         },
         // # 필터 함수
@@ -165,18 +165,17 @@ export default {
             localStorage.setItem("memo", 임시저장소);
         },
         투두스토리지저장() {
-            var 임시저장소 = JSON.stringify(this.할일);
-            localStorage.setItem("todo", 임시저장소);
-            localStorage.setItem("todoSwitch", JSON.stringify(this.할일체크));
+            localStorage.setItem("todo", JSON.stringify(this.할일));
+            localStorage.setItem("todoSwitch", JSON.stringify(this.할일스위치));
         },
         스토리지리셋() {
-            return localStorage.clear();
+            localStorage.clear();
         },
     } /* 메쏘드 끝나요 */,
 
 
     mounted() {   /* 마운티드 시작돼요 */
-        // 재접할 때마다 로컬스트리지 데이터를 내 데이터 통으로 가져옴 (... 일종의 동기화)
+        // 재접할 때마다 로컬스트리지에 남은 데이터를 내 데이터 통으로 가져옴 (일종의 동기화)
         if (typeof localStorage.name !== "undefined" && localStorage.name.length) {
             this.닉네임인풋사라짐 = true;
             this.인사말시작 = true;
@@ -187,9 +186,9 @@ export default {
         }
         if (typeof localStorage.todo !== "undefined" && localStorage.todo.length && localStorage.todoSwitch) {
             this.할일 = JSON.parse(localStorage.getItem("todo"));
-            this.할일체크 = JSON.parse(localStorage.getItem("todoSwitch"));
+            this.할일스위치 = JSON.parse(localStorage.getItem("todoSwitch"));
+            this.라인쓰루 = JSON.parse(localStorage.getItem("lineThrough"));
         }
-
     } /* 마운티드 끝나요 */,
 
 
@@ -241,32 +240,7 @@ export default {
 }
 
 /* 메모 UI */
-.clear-list {
-    position: relative;
-    height: 140px;
-    margin: 50px 10px 10px;
-    padding: 7px 10px 10px;
-    background-color: white;
-    background-image: -webkit-linear-gradient(#f6abca 1px, transparent 1px),
-        -webkit-linear-gradient(#f6abca 1px, transparent 1px),
-        -webkit-linear-gradient(#e8e8e8 1px, transparent 1px);
-    background-image: -moz-linear-gradient(#f6abca 1px, transparent 1px),
-        -moz-linear-gradient(#f6abca 1px, transparent 1px),
-        -moz-linear-gradient(#e8e8e8 1px, transparent 1px);
-    background-image: -o-linear-gradient(#f6abca 1px, transparent 1px),
-        -o-linear-gradient(#f6abca 1px, transparent 1px),
-        -o-linear-gradient(#e8e8e8 1px, transparent 1px);
-    background-image: linear-gradient(#f6abca 1px, transparent 1px),
-        linear-gradient(#f6abca 1px, transparent 1px),
-        linear-gradient(#e8e8e8 1px, transparent 1px);
-    background-size: 1px 1px, 1px 1px, 23px 23px;
-    background-repeat: repeat-y, repeat-y, repeat;
-    background-position: 22px 0, 24px 0, 0 50px;
-    border-radius: 2px;
-    -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15),
-        0 0 4px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 4px rgba(0, 0, 0, 0.5);
-}
+
 
 .memo {
     position: relative;
@@ -338,11 +312,11 @@ button {
     transition: all 0.3s;
 }
 
-input:is([type="submit"]:hover, [type="button"]):hover,
+/* input:is([type="submit"]:hover, [type="button"]):hover,
 button:hover {
     background-color: black;
     color: white;
-}
+} */
 
 /* 메모 스크롤바 셋팅 */
 textarea:focus {
@@ -391,36 +365,11 @@ textarea::-webkit-scrollbar-track,
 }
 
 /* 할일 */
-#todo-board {
-    position: fixed;
-    top: 35px;
-    right: 35px;
-    height: 130px;
-    max-width: 200px;
-    overflow-y: scroll;
-}
-
-#todo-board > li {
-    color: black;
-    margin-top: 10px;
-    font-size: 13px;
-    margin-right: 5px;
-}
-
-#todo-board button, #clear-list button {
-    font-size: 14px;
-    margin-left: 3px;
-    margin-right: 5px;
-    border: none;
-    border-radius: 3px;
-    background: transparent;
-    color: rgb(223, 17, 76);
-    position: relative;
-    bottom: 0px
-}
 
 #todo-btn:hover {
     background-color: rgb(17, 138, 51);
     color: white;
 }
+
+
 </style>

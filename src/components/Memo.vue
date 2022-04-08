@@ -51,14 +51,6 @@
                 @click.prevent="$emit('초기화')"
             />
         </form>
-    
-        <!-- 할일들 넣는 줄 -->
-<!--         <ul id="todo-board">
-            <li v-for="(할일들, i) in 할일" :key="i"      >
-                <span>{{ 할일들 }}</span>    
-                <button @click="$emit('할일삭제', i)">{{i+1}}</button>
-            </li>
-        </ul> -->
 
         <!-- 메모들 넣는 프레임 -->
         <div id="memo-board">
@@ -135,6 +127,8 @@ export default {
 .cloak > h1 {
     margin: 13px;
 }
+
+
 
 
 </style>
