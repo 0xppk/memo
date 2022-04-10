@@ -6,7 +6,7 @@ import Info from './components/Info.vue'
 const routes = [
 
     {
-        path: "/",
+        path: "/note",
         component: Main,
     },
     {

@@ -41,7 +41,7 @@ a:hover {
   outline: none;
 }
 
-input:focus {
+input:focus, textarea:focus {
   outline: none;
 }
 
