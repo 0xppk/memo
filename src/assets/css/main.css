@@ -37,11 +37,11 @@ textarea {
   resize: none;
 }
 
-a:hover {
+textarea:focus {
   outline: none;
 }
 
-input:focus, textarea:focus {
+a:hover {
   outline: none;
 }
 
@@ -61,13 +61,17 @@ input:focus, textarea:focus {
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff") format("woff");
 }
 /* 구글 웹폰트(영문) */
+@font-face {
+  font-family: "Avenir";
+  src: url("//db.onlinewebfonts.com/t/59dba72a977ac27271a6cdd5f6af92b4.woff2") format("woff2");
+}
 /* 마우스 커서 */
 html, body, textarea {
-  cursor: url("../assets/cursor.png"), auto;
+  cursor: url("../cursor.png"), auto;
 }
 
 a:hover, button, input {
-  cursor: url("../assets/cursor_hover.png"), auto;
+  cursor: url("../cursor_hover.png"), auto;
 }
 
 /* 모달 배경 */
@@ -101,30 +105,51 @@ a:hover, button, input {
   opacity: 1;
 }
 
-@-webkit-keyframes 로그인완료 {
-  25% {
-    background-color: #000076;
-  }
-  50% {
-    transform: scale(1.5);
-  }
-  100% {
-    transform: scale(3);
+@-webkit-keyframes 투명 {
+  0% {
+    opacity: 0.1;
   }
 }
 
-@keyframes 로그인완료 {
-  25% {
-    background-color: #000076;
+@keyframes 투명 {
+  0% {
+    opacity: 0.1;
   }
+}
+@-webkit-keyframes 버튼하버 {
   50% {
-    transform: scale(1.5);
+    transform: skewY(-15deg) scale(1.5);
   }
   100% {
-    transform: scale(3);
+    transform: skewY(15deg) scale(1.5);
+  }
+}
+@keyframes 버튼하버 {
+  50% {
+    transform: skewY(-15deg) scale(1.5);
+  }
+  100% {
+    transform: skewY(15deg) scale(1.5);
+  }
+}
+@-webkit-keyframes 핀고정 {
+  20% {
+    transform: perspective(400px) rotateX(0.1deg) rotateY(-2deg) scale(1.04);
+  }
+  60% {
+    transform: perspective(400px) rotateX(0.1deg) rotateY(-2deg) scale(1.04);
+  }
+}
+@keyframes 핀고정 {
+  20% {
+    transform: perspective(400px) rotateX(0.1deg) rotateY(-2deg) scale(1.04);
+  }
+  60% {
+    transform: perspective(400px) rotateX(0.1deg) rotateY(-2deg) scale(1.04);
   }
 }
 /* ---------------------------------------------------------------------------------------------------------------- */
+/* 전체 Div */
 #wrap {
   width: 100%;
   height: 100vh;
@@ -133,6 +158,7 @@ a:hover, button, input {
   z-index: 2;
 }
 
+/* 백그라운드 Div */
 .back {
   position: fixed;
   height: 100%;
@@ -140,17 +166,23 @@ a:hover, button, input {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(../assets/Traub-64.jpg);
+  background-image: url(../Traub-64.jpg);
   filter: brightness(80%);
-  z-index: 1;
+  z-index: 2;
   transition: all 2s;
 }
 
+/* 백그라운드 암막 */
 .curtain {
-  background-color: #0000C5;
   filter: brightness(40%);
 }
 
+/* 
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+*/
+/* 로그인 폼 랩 (중앙정렬을 위한 부모 div) */
 .login-wrap {
   display: flex;
   align-items: center;
@@ -159,39 +191,7 @@ a:hover, button, input {
   height: 100%;
 }
 
-.login-input {
-  height: 30px;
-  width: 90%;
-  font-size: 22px;
-  text-align: center;
-  background-color: transparent;
-  border: hidden;
-  margin: auto;
-  margin-bottom: 30px;
-  transition: all 0.5s;
-}
-
-.login-input::-moz-placeholder {
-  color: rgba(47, 53, 66, 0.3764705882);
-  background-color: transparent;
-  font-style: italic;
-  font-weight: 300;
-}
-
-.login-input:-ms-input-placeholder {
-  color: rgba(47, 53, 66, 0.3764705882);
-  background-color: transparent;
-  font-style: italic;
-  font-weight: 300;
-}
-
-.login-input::placeholder {
-  color: rgba(47, 53, 66, 0.3764705882);
-  background-color: transparent;
-  font-style: italic;
-  font-weight: 300;
-}
-
+/* 로그인 폼 박스 Div */
 #login-form {
   border: 1px solid rgba(255, 255, 255, 0.95);
   background-color: rgba(255, 255, 255, 0.95);
@@ -201,29 +201,71 @@ a:hover, button, input {
   transition: all 0.5s;
 }
 
-.login-btn {
-  color: rgba(255, 255, 255, 0.95);
-  background-color: #0000C5;
+/* 로그인 인풋 기본값 */
+.login-input {
+  height: 30px;
+  width: 90%;
+  font-size: 22px;
+  text-align: center;
+  background-color: transparent;
+  border: hidden;
+  outline: none;
+  margin: auto;
+  margin-bottom: 30px;
   transition: all 0.5s;
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 100px 0px 100px 80px;
-  border: 1px solid black;
+}
+
+/* 로그인 인풋 속살 */
+.login-input::-moz-placeholder {
+  color: rgba(47, 53, 66, 0.3764705882);
+  background-color: transparent;
+  font-style: italic;
+  font-weight: 300;
+}
+.login-input:-ms-input-placeholder {
+  color: rgba(47, 53, 66, 0.3764705882);
+  background-color: transparent;
+  font-style: italic;
+  font-weight: 300;
+}
+.login-input::placeholder {
+  color: rgba(47, 53, 66, 0.3764705882);
+  background-color: transparent;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* 로그인 버튼 */
+.login-btn {
+  color: black;
+  background-color: transparent;
   margin: 2px;
-  transition: all 0.3s;
-  border: 1px solid transparent;
+  border: 1px solid black;
+  border-radius: 100px 0px 100px 80px;
+  transition: all 0.6s;
+  border: none;
   border-radius: 2px;
 }
 
+/* 로그인 버튼 애니메이션 */
 .login-btn:hover {
-  background-color: #0000C5;
-  color: rgba(255, 255, 255, 0.95);
+  background-color: transparent;
+  color: #FFA500;
 }
 
+/* 
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+*/
+/* 메모인풋 div */
 #memo-form {
   margin-top: 150px;
   margin-bottom: 50px;
+  transition: all 1s;
 }
 
+/* 메모인풋 */
 #memo-input {
   border: hidden;
   border-bottom: 1px orange solid;
@@ -233,8 +275,10 @@ a:hover, button, input {
   font-size: 22px;
   background-color: transparent;
   text-align: center;
+  outline: none;
 }
 
+/* 메모인풋 속살 */
 #memo-input::-moz-placeholder {
   color: rgba(47, 53, 66, 0.3764705882);
   background-color: transparent;
@@ -242,7 +286,6 @@ a:hover, button, input {
   font-style: italic;
   font-weight: 300;
 }
-
 #memo-input:-ms-input-placeholder {
   color: rgba(47, 53, 66, 0.3764705882);
   background-color: transparent;
@@ -250,7 +293,6 @@ a:hover, button, input {
   font-style: italic;
   font-weight: 300;
 }
-
 #memo-input::placeholder {
   color: rgba(47, 53, 66, 0.3764705882);
   background-color: transparent;
@@ -259,81 +301,65 @@ a:hover, button, input {
   font-weight: 300;
 }
 
+/* 메모버튼 */
+.memo-btn {
+  color: black;
+  background-color: transparent;
+  margin: 2px;
+  border: 1px solid black;
+  border-radius: 100px 0px 100px 80px;
+  transition: all 0.6s;
+}
+
+/* 메모발행 버튼 애니메이션 */
+.memo-btn:hover {
+  color: rgba(255, 255, 255, 0.95);
+  background-color: black;
+}
+
+.todo-btn:hover {
+  color: rgba(255, 255, 255, 0.95);
+  background-color: black;
+}
+
+/* 
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+*/
+/* 메모장 전체 레이아웃 */
 #memo-board {
   display: grid;
   max-width: 700px;
   margin: auto;
   place-items: center;
+  justify-content: center;
 }
 
-/* 메모 스크롤바 셋팅 */
-textarea::-webkit-scrollbar,
-#todo-board::-webkit-scrollbar {
-  width: 3px;
-}
-
-textarea::-webkit-scrollbar-thumb,
-#todo-board::-webkit-scrollbar-thumb {
-  background-color: #2f3542;
-  border-radius: 10px;
-}
-
-textarea::-webkit-scrollbar-track,
-#todo-board::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 10px;
-}
-
-/* 메모삭제 & 삭제취소 버튼 */
-.del-btn {
-  position: absolute;
-  top: 1px;
-  right: 0px;
-}
-
-.del-btn:hover {
-  color: orange;
-  background: black;
-}
-
-/* 리셋버튼 & 정렬버튼 */
-/* 할일 */
-.memo-btn:hover, .todo-btn:hover {
-  background-color: black;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.reset-btn:hover {
-  background-color: rgba(180, 32, 32, 0.954);
-  color: whitesmoke;
-}
-
-.sort-btn:hover {
-  background-color: rgb(14, 14, 15);
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.btn {
-  color: black;
-  background-color: #000076;
-  transition: all 0.5s;
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 100px 0px 100px 80px;
-  border: 1px solid black;
-  margin: 2px;
-  transition: all 0.3s;
-}
-
-/* 메모 UI */
+/* 메모 모양 */
 .memo {
   position: relative;
   height: 170px;
   margin: 40px 10px 10px;
   padding: 5px 10px 10px;
   background-color: rgba(255, 255, 255, 0.95);
+  transition: transform 0.5s;
 }
 
-textarea {
+/* 메모 타이틀 */
+.memo-title {
+  width: 100%;
+  height: 24px;
+  margin-left: 10px;
+  padding-top: 0;
+  color: rgba(240, 239, 235, 0.9294117647);
+  background: transparent;
+  border: none;
+  overflow: hidden;
+}
+
+/* 매모 내용(텍스트 에어리어) */
+.memo-content {
   color: rgb(21, 20, 20);
   border: none;
   background: transparent;
@@ -341,11 +367,75 @@ textarea {
   padding-right: 15px;
   margin: 0;
   margin-left: 20px;
-  width: 100%;
+  width: 99%;
   height: 100%;
 }
 
-/* 모달 버튼 두개 */
+/* 메모 스크롤바 셋팅 */
+textarea::-webkit-scrollbar {
+  width: 3px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+/* 메모삭제  버튼 */
+.del-btn {
+  position: absolute;
+  top: 1px;
+  right: 0px;
+  color: orange;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+}
+
+/* 메모삭제 버튼 애니메이션 */
+.del-btn:hover {
+  transform: scale(1.5);
+  -webkit-animation-name: 버튼하버;
+          animation-name: 버튼하버;
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+/* 
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+*/
+/* 버튼 기본 */
+.btn {
+  color: #151515;
+  background-color: rgba(255, 255, 255, 0.95);
+  margin: 2px;
+  border: 1px solid black;
+  border-radius: 100px 0px 100px 80px;
+  transition: all 0.6s;
+}
+
+/* 리셋버튼 */
+.reset-btn:hover {
+  background-color: rgb(180, 32, 32);
+  color: whitesmoke;
+}
+
+/* 정렬버튼 */
+.sort-btn:hover {
+  background-color: #151515;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* 모달창 확인&취소버튼 */
 #send, #close {
   background: black;
   color: rgba(255, 255, 255, 0.95);
@@ -361,7 +451,12 @@ textarea {
   background: rgba(191, 20, 20, 0.916);
 }
 
-/* 상단바 UI */
+/* 
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+*/
+/* 상단바 Div */
 .square {
   height: 160px;
   max-width: 400px;
@@ -375,6 +470,7 @@ textarea {
   color: rgba(255, 255, 255, 0.95);
 }
 
+/* 상단바 애니메이션 */
 .square-hide {
   transform: translateY(-120px);
 }
@@ -383,22 +479,36 @@ textarea {
   transform: translateY(0px);
 }
 
+/* 시계 */
 .cloak > h1 {
   margin: 13px;
 }
 
-/* 할일 알림창 */
+/* 로그인 정보 & 인사말 */
+#greeting {
+  margin: 5px;
+}
+
+/* 
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+*/
+/* 알림배너 Div */
 .alert {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
-  width: 230px;
-  height: 80px;
-  right: 7px;
-  top: 65px;
+  top: 50px;
+  right: 3px;
+  width: 200px;
+  height: 70px;
   border-radius: 20px;
   margin: 10px;
-  z-index: 30;
+  z-index: 5;
   background: rgba(255, 255, 255, 0.95);
-  transform: translateX(300px);
+  transform: translateX(300px) skewX(15deg);
   transition: all 1s;
 }
 .alert span {
@@ -406,11 +516,17 @@ textarea {
   font-size: 18px;
 }
 
+/* 알림배너 애니메이션 */
 .alert-show {
   transform: translateX(0px);
 }
 
-/* 오른쪽 숨김바 */
+/* 
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+*/
+/* 오른쪽바 Div */
 .right {
   width: 240px;
   height: 80%;
@@ -420,6 +536,7 @@ textarea {
   z-index: 1;
   transform: translateX(210px);
   transition: all 0.6s ease-out;
+  opacity: 1;
 }
 .right .clear-list p {
   color: black;
@@ -445,10 +562,81 @@ textarea {
   color: rgb(223, 17, 76);
 }
 
+/* 오륵쪽바 애니메이션 */
 .right:hover {
   transform: translateX(7px);
 }
 
+.right-opening {
+  transform: translateX(7px);
+  -webkit-animation: 투명 1.2s;
+          animation: 투명 1.2s;
+}
+
+.when-added {
+  -webkit-animation-name: 할일추가됨;
+          animation-name: 할일추가됨;
+  -webkit-animation-duration: 1.7s;
+          animation-duration: 1.7s;
+}
+@-webkit-keyframes 할일추가됨 {
+  20% {
+    transform: translateX(210px) skew(2deg);
+  }
+  40% {
+    transform: translateX(210px) skew(-2deg);
+  }
+  60% {
+    transform: translateX(210px) skew(1deg);
+  }
+  80% {
+    transform: translateX(210px) skew(-1deg);
+  }
+}
+@keyframes 할일추가됨 {
+  20% {
+    transform: translateX(210px) skew(2deg);
+  }
+  40% {
+    transform: translateX(210px) skew(-2deg);
+  }
+  60% {
+    transform: translateX(210px) skew(1deg);
+  }
+  80% {
+    transform: translateX(210px) skew(-1deg);
+  }
+}
+
+/* 핀셋 */
+.pin {
+  width: 20px;
+  height: 20px;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+.pin-click {
+  opacity: 1;
+}
+
+.pin-fixed {
+  transform: translateX(7px);
+}
+
+.when-added-fixed {
+  -webkit-animation-name: 핀고정;
+          animation-name: 핀고정;
+  -webkit-animation-duration: 3.3s;
+          animation-duration: 3.3s;
+}
+
+/* 
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+*/
+/* 메모 디자인 */
 .memo {
   background-color: white;
   background-image: linear-gradient(#f6abca 1px, transparent 1px), linear-gradient(#f6abca 1px, transparent 1px), linear-gradient(#e8e8e8 1px, transparent 1px);
@@ -459,6 +647,7 @@ textarea {
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 4px rgba(0, 0, 0, 0.5);
 }
 
+/* 할일 디자인 */
 .clear-list {
   height: 90%;
   position: relative;
@@ -474,6 +663,7 @@ textarea {
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 4px rgba(0, 0, 0, 0.5);
 }
 
+/* 메모 헤딩 디자인 */
 #notepad-heading {
   position: absolute;
   text-align: center;
@@ -487,7 +677,7 @@ textarea {
   background-image: -webkit-linear-gradient(top, #3a3a3a, #31363a);
   box-shadow: inset 0 1px #000, 0 2px 1px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.5), 0 1px black;
 }
-#notepad-heading > h5 {
+#notepad-heading h5 {
   font-size: 13px;
   color: white;
   text-align: center;
@@ -495,6 +685,12 @@ textarea {
   margin-top: 2px;
 }
 
+/* 
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@@#@#@#@#@@
+*/
+/* 데스크탑 */
 @media screen and (min-width: 769px) {
   #memo-board {
     grid-template-columns: repeat(3, 1fr);
@@ -504,13 +700,14 @@ textarea {
     width: 210px;
   }
 }
+/* 태블릿 */
 @media screen and (min-width: 577px) and (max-width: 768px) {
   #memo-board {
     grid-template-columns: repeat(2, 1fr);
-    width: 600px;
+    width: 500px;
   }
   #memo-board .memo {
-    width: 280px;
+    width: 250px;
   }
   #memo-board textarea {
     font-size: 13px;
@@ -526,7 +723,7 @@ textarea {
     grid-template-columns: repeat(1, 1fr);
   }
   #memo-board .memo {
-    width: 320px;
+    width: 300px;
   }
   #memo-board textarea {
     font-size: 12px;
@@ -537,7 +734,11 @@ textarea {
     padding-bottom: 100px;
   }
 
-  .clear-list span {
+  .clear-list p {
     font-size: 12px;
+  }
+
+  #send, #close {
+    margin: 20px;
   }
 }/*# sourceMappingURL=main.css.map */

@@ -1,6 +1,6 @@
 <template>
-<div>
-        <form id="memo-form" v-if="닉네임인풋사라짐 == true" >
+    <div>
+        <form id="memo-form"  :class="{ curtain: 암전 }"  v-if="닉네임인풋사라짐 == true"  >
             <!-- 메모에 들어갈 말 -->
             <input
                 type="text"
@@ -11,16 +11,16 @@
                 style="transition: all 0.5s"
                 :value="인풋공백으로"
                 @input="$emit('메모입력', $event.target.value)"
-                @focus="애니메이션 = 'white'"
-                @blur="애니메이션 = 'transparent'"
-                :style="{ 'background-color': 애니메이션 }"
+                @focus="스타일.애니메이션 = 'white'"
+                @blur="스타일.애니메이션 = 'transparent'"
+                :style="{ 'background-color': 스타일.애니메이션 }"
             />
-            <br>
+            <br />
             <!-- 메모 제출 버튼 -->
             <input
                 type="submit"
                 class="memo-btn btn"
-                value="post-it !!"
+                value="memo"
                 @click.prevent="$emit('메모추가'), (인풋공백으로 = '')"
             />
             <!-- 할일 제출 버튼 -->
@@ -32,44 +32,62 @@
             />
         </form>
 
-
         <!-- 메모들 넣는 프레임 -->
         <div id="memo-board">
-            <div class="memo" v-for="(메모들, i) in 메모" :key="i">
+            <div
+                class="memo"
+                v-for="(메모들, i) in 메모.내용"
+                :key="i"
+                :style="{ transform: 스타일.애니메이션2[i] }"
+                @mouseenter="스타일.애니메이션2[i] = 'scale(1.1)'"
+                @mouseleave="스타일.애니메이션2[i] = 'none'"
+            >
                 <div id="notepad-heading">
-                    <!-- <textarea value="메모"> </textarea> -->
+                    <textarea
+                        class="memo-title"
+                        :value="메모.제목[i]"
+                        spellcheck="false"
+                        @keyup.prevent="$emit('제목수정', i, $event.target.value)"    
+                    ></textarea>g
                     <form>
                         <input
                             type="submit"
-                            class="del-btn btn"
+                            class="del-btn"
                             value="x"
                             @click.prevent="$emit('메모삭제', i)"
                         />
                     </form>
                 </div>
-                <textarea :value="메모들"  spellcheck = "false" @keyup="$emit('수정', i)"> </textarea>
+                <textarea
+                    class="memo-content"
+                    :value="메모들"
+                    spellcheck="false"
+                    @input.prevent="$emit('내용수정', { 인덱스: i, 내용: $event.target.value })"
+                    @focus="$emit('암전')"
+                    @blur="$emit('암전끄기')"
+                >
+                </textarea>
             </div>
         </div>
-</div>
+    </div>
 </template>
 <script>
 export default {
     name: "Memo",
     props: {
         닉네임인풋사라짐: Boolean,
-        메모: Array,
-        할일: Array,
+        암전: Boolean,
+        메모: Object,
     },
-
-    data() {  /* 데이터 시작돼요 */
+    data() {
+        /* 데이터 시작돼요 */
         return {
             체크확인: false,
             인풋공백으로: "",
-            애니메이션: "",
+            스타일: { 애니메이션: "", 애니메이션2: [] },
         };
-    },   /* 데이터 끝나요 */
+    } /* 데이터 끝나요 */,
+
 };
-
-
 </script>
 <style></style>

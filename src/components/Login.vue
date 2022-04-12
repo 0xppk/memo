@@ -11,12 +11,12 @@
                 spellcheck="false"
                 :style="{backgroundColor: 배경색}"
                 @input="$emit('닉네임변경', $event.target.value)"
-                @focus="배경색 = 'transparent'"
-                @blur="배경색 = 'transparent'"
+                @focus="배경색='transparent'"
+                @blur="배경색='transparent'"
             /><br>
             <input
                 type="submit"
-                class="login-btn btn"
+                class="login-btn"
                 value="Join"
                 @click.prevent="$emit('인사말')"
             />

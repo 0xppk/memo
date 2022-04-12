@@ -5,7 +5,7 @@
         <div class="square"  v-if="닉네임인풋사라짐 == true" :class="{'square-hide': 시계사라짐}" >
             <div class="cloak">
                 <h1 id="clock">{{Time}}</h1>
-                <h2 id="greeting" v-if="인사말시작 == true">{{닉네임인풋 + ' ㅎㅇ'}} </h2>
+                <h2 id="greeting" v-if="인사말시작 == true">{{닉네임인풋}}님 ㅎㅇ </h2>
                 <form>
                     <!-- 역순 정렬 버튼 -->
                     <input
@@ -32,13 +32,15 @@
         </div>
     
         <!-- 오른쪽 숨김바 -->
-        <div class="right" v-if="닉네임인풋사라짐 == true " :class="{'right-opening': 첫진입 } "  >
+        <div class="right" v-if="닉네임인풋사라짐 == true " :class="{'right-opening': 첫진입, 'when-added': 할일알림, 'pin-fixed':핀클릭, 'when-added-fixed': 핀클릭&&할일알림 }" >
             <div class="clear-list">
-                <h5 id="notepad-heading" style="padding-top: 5px">Scheduler</h5>
-                   <div v-for="(할일들, i) in 할일"   :key="i">
+                <h5 id="notepad-heading" >
+                    <img src="../assets/pin-green@2x.png" class="pin" :class="{'pin-click': 핀클릭 }" @click.prevent="핀클릭=!핀클릭">
+                </h5>
+                   <div v-for="(할일들, i) in 할일.내용"   :key="i">
                         <p>
                             <button @click.prevent="$emit('할일삭제', i)">{{i+1}}</button>
-                            <span :ref="`todo-${i}`"  @click.prevent="취소선(i);" :style="{textDecoration:라인쓰루[i]}">{{할일들}}</span>
+                            <span :ref="`todo-${i}`"  @click.prevent="취소선(i);" :style="{textDecoration:할일.라인쓰루[i]}">{{할일들}}</span>
                         </p>
                    </div>
             </div>
@@ -47,8 +49,8 @@
         <!-- 알림창 -->
         <div class="alert"  :class="{'alert-show': 할일알림}" >
             <p>
-                안 하기만 해봐ㅎ<br>
-                <span>{{할일[this.할일.length-1]}}</span>
+                The Item is added in<br>
+                <span>{{할일.내용[this.할일.내용.length-1]}}</span>
             </p>
         </div>
     
@@ -63,11 +65,10 @@ export default {
         인사말시작: Boolean,
         닉네임인풋: String,
         할일알림: Boolean,
-        할일: Array,
-        할일스위치: Array,
-        라인쓰루: Array,
+        할일: Object,
         닉네임인풋사라짐: Boolean,
         시계사라짐: Boolean,
+        암전: Boolean,
     },
     data(){
         return {
@@ -75,27 +76,29 @@ export default {
             첫진입 : false,
             필터내용: "",
             스위치: false,
+            할일알림없어짐: false,
+            핀클릭: false,
         }
     },
     methods: {
         취소선(i){
-            if(this.할일스위치[i] == 0){
-                this.할일스위치[i] = 1;
-                this.라인쓰루[i] = 'line-through'
-                localStorage.setItem("todoSwitch", JSON.stringify(this.할일스위치));
-                localStorage.setItem("lineThrough", JSON.stringify(this.라인쓰루));
-            } else if(this.할일스위치[i]==1){
-                this.할일스위치[i] = 0;
-                this.라인쓰루[i] = 'none'
-                localStorage.setItem("todoSwitch", JSON.stringify(this.할일스위치));
-                localStorage.setItem("lineThrough", JSON.stringify(this.라인쓰루));
+            if(this.할일.할일스위치[i] == 0){
+                this.할일.할일스위치[i] = 1;
+                this.할일.라인쓰루[i] = 'line-through'
+                localStorage.setItem("todoSwitch", JSON.stringify(this.할일.할일스위치));
+                localStorage.setItem("lineThrough", JSON.stringify(this.할일.라인쓰루));
+            } else if(this.할일.할일스위치[i]==1){
+                this.할일.할일스위치[i] = 0;
+                this.할일.라인쓰루[i] = 'none'
+                localStorage.setItem("todoSwitch", JSON.stringify(this.할일.할일스위치));
+                localStorage.setItem("lineThrough", JSON.stringify(this.할일.라인쓰루));
             }
         }
     },
     computed: {
         Time(){ 
             let 월 = String(this.Date.getMonth()+1);
-            let 일 = String(this.Date.getHours()).padStart(2, '0');
+            let 일 = String(this.Date.getHours())
             let 시 = String(this.Date.getHours()).padStart(2, '0');
             let 분 = String(this.Date.getMinutes()).padStart(2, '0');
             let 초 = String(this.Date.getSeconds()).padStart(2, '0');
@@ -113,7 +116,7 @@ export default {
                 this.첫진입=true;
                 setInterval(()=>{
                     this.첫진입 = false;
-                }, 1500);
+                }, 1600);
             }
         }
     },
@@ -124,10 +127,5 @@ export default {
 
 </script>
 <style>
-.right-opening {
-    transform: translateX(7px)
-}
-#greeting {
-    margin: 5px;
-}
+
 </style>

@@ -10,11 +10,12 @@
 body { margin: 0 }
 h1 { text-shadow: 1px 1px 3px rgba(49, 33, 33, 0.575);}
 ul { list-style-type: none }
-h1, h2, h3, h4, h5, h6, p, div, input, button, ul, li, textarea { font-family: "GangwonEdu_OTFBoldA"; }
+h1, h2, h3, h4, h5, h6, p, div, input, button, ul, li, textarea { font-family: "GangwonEdu_OTFBoldA";}
 p {line-height: 1.64; font-size: 14px; }
 textarea {  line-height: 1.77; font-size: 13px; resize: none; }
+textarea:focus {outline:none;}
+// input:focus {outline:none;}
 a:hover { outline: none; }
-input:focus, textarea:focus {outline:none;}
 ::selection { color: #fff; background: #000; }
 
 
@@ -25,10 +26,13 @@ input:focus, textarea:focus {outline:none;}
         format("woff");
 }
 /* 구글 웹폰트(영문) */
-
+@font-face {
+    font-family: "Avenir";
+    src: url("//db.onlinewebfonts.com/t/59dba72a977ac27271a6cdd5f6af92b4.woff2") format("woff2")
+}
 /* 마우스 커서 */
-html, body, textarea { cursor:url('../assets/cursor.png'),auto }
-a:hover, button, input { cursor:url('../assets/cursor_hover.png'),auto }
+html, body, textarea { cursor:url('../cursor.png'),auto }
+a:hover, button, input { cursor:url('../cursor_hover.png'),auto }
 
 /* 모달 배경 */
 .black-bg {
