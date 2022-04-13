@@ -169,7 +169,6 @@ a:hover, button, input {
   background-image: url(../Traub-64.jpg);
   z-index: 2;
   filter: brightness(80%);
-  transform: translate3d(0, 0, 0);
   transition: all 2s;
 }
 
@@ -542,9 +541,10 @@ textarea::-webkit-scrollbar-track {
 }
 .right .clear-list p {
   color: black;
-  margin: 0 0 -1px 0;
+  margin: 0 0 0px 0;
   line-height: 1.72;
   width: 185px;
+  height: 23px;
 }
 .right .clear-list span {
   position: relative;
@@ -653,7 +653,7 @@ textarea::-webkit-scrollbar-track {
 .clear-list {
   height: 80%;
   position: relative;
-  padding-top: 6px;
+  padding-top: 4px;
   margin: 200px 10px 10px;
   text-align: left;
   background-color: rgba(255, 255, 255, 0.95);
@@ -689,7 +689,7 @@ textarea::-webkit-scrollbar-track {
 
 /* 형광펜 디자인 */
 .lineThrough {
-  background: linear-gradient(to bottom, rgb(235, 135, 152) 15%, transparent 1px);
+  background: linear-gradient(to top, rgb(235, 135, 152) 100%, transparent 100%);
 }
 
 /* 

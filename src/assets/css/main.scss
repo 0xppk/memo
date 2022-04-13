@@ -9,12 +9,6 @@ $화이트 : rgba(255, 255, 255, 0.95);
 $보라 : slateblue;
 $쓰리디 : translate3d(0, 0, 0);
 
-%btn {
-    width: auto;
-    height: auto;
-    padding: auto;
-}
-
 @mixin 버튼($컬러, $배경색) {
     color : $컬러;
     background-color: $배경색;
@@ -87,7 +81,6 @@ $쓰리디 : translate3d(0, 0, 0);
     background-image: url(../Traub-64.jpg);
     z-index: 2;
     filter:  brightness(80%);
-    transform: $쓰리디;
     transition: all 2s;
 }
 /* 백그라운드 암전 */
@@ -419,9 +412,10 @@ textarea::-webkit-scrollbar-track {
 
     .clear-list p {
         color:black;
-        margin:0 0 -1px 0;
+        margin:0 0 0px 0;
         line-height: 1.72;
         width: 185px;
+        height: 23px;
     }
     .clear-list span {
         position: relative;
@@ -502,7 +496,7 @@ textarea::-webkit-scrollbar-track {
 .clear-list {
     height: 80%;
     position: relative;
-    padding-top: 6px;
+    padding-top: 4px;
     margin: 200px 10px 10px;
     text-align: left;
     background-color: $화이트;

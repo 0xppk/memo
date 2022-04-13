@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <form id="memo-form" :class="{curtain: 암전}"  v-if="닉네임인풋사라짐 == true"  >
+    <div  v-if="닉네임인풋사라짐 == true" >
+        <form id="memo-form" :class="{curtain: 암전}"  >
             <!-- 메모에 들어갈 말 -->
             <input
                 type="text"
@@ -33,7 +33,7 @@
         </form>
 
         <!-- 메모들 넣는 프레임 -->
-        <div id="memo-board"  v-if="닉네임인풋사라짐 == true" >
+        <div id="memo-board" >
             <div
                 class="memo"
                 v-for="(메모들, i) in 메모.내용"
