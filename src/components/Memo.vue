@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form id="memo-form"  :class="{ curtain: 암전 }"  v-if="닉네임인풋사라짐 == true"  >
+        <form id="memo-form" :class="{curtain: 암전}"  v-if="닉네임인풋사라짐 == true"  >
             <!-- 메모에 들어갈 말 -->
             <input
                 type="text"
@@ -9,11 +9,11 @@
                 spellcheck="false"
                 autofocus="true"
                 style="transition: all 0.5s"
+                :style="{ 'background-color': 스타일.애니메이션 }"
                 :value="인풋공백으로"
                 @input="$emit('메모입력', $event.target.value)"
                 @focus="스타일.애니메이션 = 'white'"
                 @blur="스타일.애니메이션 = 'transparent'"
-                :style="{ 'background-color': 스타일.애니메이션 }"
             />
             <br />
             <!-- 메모 제출 버튼 -->
@@ -45,10 +45,13 @@
                 <div id="notepad-heading">
                     <textarea
                         class="memo-title"
-                        :value="메모.제목[i]"
                         spellcheck="false"
-                        @keyup.prevent="$emit('제목수정', i, $event.target.value)"    
-                    ></textarea>g
+                        :value="메모.제목[i]"
+                        :maxlength="메모.제목글자수제한[i]"
+                        @keyup="$emit('제목수정', i, $event.target.value)"
+                        @focus="$emit('암전')"
+                        @blur="$emit('암전끄기')"    
+                    ></textarea>
                     <form>
                         <input
                             type="submit"
@@ -60,9 +63,9 @@
                 </div>
                 <textarea
                     class="memo-content"
-                    :value="메모들"
                     spellcheck="false"
-                    @input.prevent="$emit('내용수정', { 인덱스: i, 내용: $event.target.value })"
+                    :value="메모들"
+                    @input="$emit('내용수정', { 인덱스: i, 내용: $event.target.value })"
                     @focus="$emit('암전')"
                     @blur="$emit('암전끄기')"
                 >
