@@ -1,21 +1,19 @@
 <template>
-    <div></div>
-
+  
 </template>
-
 <script>
 export default {
-    // eslint-disable-next-line
-    name: "Home",
+    name: "Info",
     props: {
-
+        
     },
 
     methods: {
         
     },
-};
+}
 </script>
-<style>
-</style>
 
+<style>
+
+</style>

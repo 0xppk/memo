@@ -1,13 +1,18 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import MemoAll from './components/MemoAll.vue'
+import Main from './components/Main.vue'
+import Info from './components/Info.vue'
 
 const routes = [
 
     {
         path: "/note",
-        component: MemoAll,
+        component: Main,
     },
+    {
+        path: "/info",
+        component: Info,
+    }
 
 ];
 
