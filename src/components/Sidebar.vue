@@ -1,6 +1,7 @@
 <template>
+
+
     <div>
-    
         <!-- 상단 숨김바 (시계 ) -->
         <div class="square"  v-if="닉네임인풋사라짐 == true" :class="{'square-hide': 시계사라짐}" >
             <div class="cloak">
@@ -40,7 +41,7 @@
                    <div v-for="(할일들, i) in 할일.내용"   :key="i">
                         <p>
                             <button @click.prevent="$emit('할일삭제', i)">{{i+1}}</button>
-                            <span :class="{lineThrough: 할일.할일스위치[i]}"  @click.prevent="취소선(i);" >{{할일들}}</span>
+                            <span :class="{ lineThrough: 할일.할일스위치[i]}"  @click.prevent="취소선(i);" >{{할일들}}</span>
                         </p>
                    </div>
             </div>
@@ -78,6 +79,7 @@ export default {
             애니메이션: { 첫진입: false, 핀클릭: false }
         }
     },
+    
     methods: {
         취소선(i){
             if(this.할일.할일스위치[i] == 0){
@@ -89,6 +91,7 @@ export default {
             }
         }
     },
+
     computed: {
         Time(){ 
             let 월 = String(this.Date.getMonth()+1);
@@ -99,11 +102,13 @@ export default {
             return 월 + '월 ' + 일 + '일 ' + 시 +':'+ 분
         },
     },
+
     created(){
         setInterval(()=>{ 
             this.Date = new Date();
         }, 1000);
     },
+
     watch: {
         닉네임인풋사라짐(){
             if(this.닉네임인풋사라짐==true){
