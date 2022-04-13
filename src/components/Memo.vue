@@ -33,7 +33,7 @@
         </form>
 
         <!-- 메모들 넣는 프레임 -->
-        <div id="memo-board">
+        <div id="memo-board"  v-if="닉네임인풋사라짐 == true" >
             <div
                 class="memo"
                 v-for="(메모들, i) in 메모.내용"
