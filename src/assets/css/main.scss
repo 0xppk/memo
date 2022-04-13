@@ -85,11 +85,12 @@ $쓰리디 : translate3d(0, 0, 0);
     background-position: center;
     background-repeat: no-repeat;
     background-image: url(../Traub-64.jpg);
-    filter:  brightness(80%);
     z-index: 2;
+    filter:  brightness(80%);
+    transform: $쓰리디;
     transition: all 2s;
 }
-/* 백그라운드 암막 */
+/* 백그라운드 암전 */
 .curtain {
     filter:  brightness(40%);
 }
@@ -237,7 +238,7 @@ $쓰리디 : translate3d(0, 0, 0);
     width: 100%;
     height: 24px;
     margin-left: 10px;
-    padding-top: 0;
+    padding-top: 3px;
     color: #f0efebed;
     background: transparent;
     border: none;
@@ -270,6 +271,7 @@ textarea::-webkit-scrollbar-track {
     position: absolute;
     top: 1px;
     right: 0px;
+    padding-top: 3px;
     color: orange;
     background: transparent;
     border: none;
@@ -414,10 +416,11 @@ textarea::-webkit-scrollbar-track {
     transform: translateX(210px);
     transition: all 0.6s ease-out;
     opacity: 1;
+
     .clear-list p {
         color:black;
         margin:0 0 -1px 0;
-        line-height: 1.7;
+        line-height: 1.72;
         width: 185px;
     }
     .clear-list span {
@@ -497,9 +500,9 @@ textarea::-webkit-scrollbar-track {
 }
 /* 할일 디자인 */
 .clear-list {
-    height: 90%;
+    height: 80%;
     position: relative;
-    padding-top: 5px;
+    padding-top: 6px;
     margin: 200px 10px 10px;
     text-align: left;
     background-color: $화이트;
@@ -544,6 +547,12 @@ textarea::-webkit-scrollbar-track {
         margin-top: 2px;
     }
 }
+/* 형광펜 디자인 */
+.lineThrough {
+    background: linear-gradient(to bottom, rgb(235, 135, 152) 15%, transparent 1px);
+}
+
+
 
 
 /* 
@@ -579,6 +588,7 @@ textarea::-webkit-scrollbar-track {
     }
     .clear-list span {
         font-size: 13px;
+        line-height: 1.77;
     }
 }
 // 모바일
@@ -596,8 +606,13 @@ textarea::-webkit-scrollbar-track {
     .login-wrap {
         padding-bottom: 100px;
     }
-    .clear-list p {
-        font-size: 12px;
+    .clear-list {
+        height: 55%;
+        transform: translateY(80px);
+        span {
+            font-size: 12px;
+            line-height: 1.93;
+        }
     }
     #send, #close {
         margin : 20px;

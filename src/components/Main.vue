@@ -1,4 +1,6 @@
 <template >
+
+
     <div class="back" :class="{ curtain:!닉네임인풋사라짐 || 암전 }"></div>
     <div id="wrap">
 
@@ -6,6 +8,7 @@
         <Modal
             :삭제인덱스="삭제인덱스"
             :모달띄움="모달띄움"
+            :모달잠금="모달잠금"
             @모달창닫아줘="모달창닫기"
             @삭제해줘="삭제확인버튼(삭제인덱스)"
             @리셋해줘="리셋확인버튼"
@@ -25,8 +28,8 @@
             :인사말시작="인사말시작"
             :시계사라짐="시계사라짐"
             :할일알림="할일알림"
-            :할일="할일"
             :암전="암전"
+            :할일="할일"
             @할일삭제="할일삭제버튼($event)"
             @초기화="모달창열기"
             @정렬="역순정렬"
@@ -79,8 +82,15 @@ export default {
             닉네임인풋: "",
             닉네임인풋사라짐: false,
             인사말시작: false,
+            삭제인덱스: null,
             메모인풋: "",
-            메모: { 내용:['1. 여기를 눌러서 바로 수정하세요\n2. 자동으로 저장됩니다'], 제목: ['제목은 여기에'] },
+            메모: {
+                내용: [
+                    '1. 여기를 눌러 내용을 바로 수정하세요\n2. 작성된 메모는 자동으로 저장됩니다'
+                ],
+                제목: ['제목은 여기에'],
+                제목글자수제한: [18],
+            },
             할일: {
                 내용: [
                     "클릭하면 줄이 그어져요",
@@ -88,13 +98,12 @@ export default {
                     "삭제는 숫자버튼을 누르세요",
                 ],
                 할일스위치: [0, 0, 0],
-                라인쓰루: [],
             },
-            삭제인덱스: null,
             할일알림: false,
             시계사라짐: false,
             암전: false,
             모달띄움: false,
+            모달잠금: false,
         };
     } /* 데이터 끝나요 */,
 
@@ -116,6 +125,7 @@ export default {
             if (this.메모인풋 !== "") {
                 this.메모.내용.push(this.메모인풋);
                 this.메모.제목.push('');
+                this.메모.제목글자수제한.push(18);
                 this.메모인풋 = "";
                 this.메모스토리지저장();
             } else {
@@ -126,7 +136,6 @@ export default {
             if (this.메모인풋 !== "") {
                 this.할일.내용.push(this.메모인풋);
                 this.할일.할일스위치.push(0);
-                this.할일.라인쓰루.push("none");
                 this.할일알림 = true;
                 this.메모인풋 = "";
                 this.투두스토리지저장();
@@ -137,18 +146,18 @@ export default {
         삭제확인버튼(i) {
             this.메모.내용.splice(i, 1);
             this.메모.제목.splice(i, 1);
+            this.메모.제목글자수제한.splice(i, 1);
             localStorage.setItem("memo", JSON.stringify(this.메모.내용));
             localStorage.setItem("title", JSON.stringify(this.메모.제목));
-            document.querySelector("#send").disabled = true;
+            localStorage.setItem("titleLength", JSON.stringify(this.메모.제목글자수제한));
+            this.모달잠금 = true;
             this.모달창닫기();
         },
         할일삭제버튼(굳) {
             this.할일.내용.splice(굳, 1);
             this.할일.할일스위치.splice(굳, 1);
-            this.할일.라인쓰루.splice(굳, 1);
             localStorage.setItem("todo", JSON.stringify(this.할일.내용));
             localStorage.setItem("todoSwitch", JSON.stringify(this.할일.할일스위치));
-            localStorage.setItem("lineThrough", JSON.stringify(this.할일.라인쓰루));
         },
         리셋확인버튼() {
             this.모달창닫기();
@@ -156,7 +165,6 @@ export default {
             this.메모.제목 = [];
             this.할일.내용 = [];
             this.할일.할일스위치 = [];
-            this.할일.라인쓰루 = [];
             this.닉네임인풋 = "";
             this.인사말시작 = false,
             this.시계사라짐 = false,
@@ -165,7 +173,7 @@ export default {
         },
         제목수정(i) {
             // Fixme: 결과는 제대로 출력되나 event가 정확한 파라미터를 입력받은 것이 아니라 취소선이 그인다.
-            // Fixme: 핸들러 안에 event를 넣을 수가 없다. 머리로는 되는데 여러 수 넣어봐도 자꾸 엉킴. 다수의 Payload를 싣는 내 과정에 문제가 있는 듯하다ㅜ 
+            // Fixme: 핸들러 안에 event를 넣을 수가 없다.. 머리로는 되는데 여러 수 넣어봐도 자꾸 엉킴. 다수의 Payload를 싣는 과정에 문제가 있는 듯하다ㅜ 
             this.메모.제목.splice(i, 1, event.target.value);
             localStorage.setItem("title", JSON.stringify(this.메모.제목));
         },
@@ -178,6 +186,7 @@ export default {
         // # 모달창 함수
         모달창열기() {
             this.모달띄움 = true;
+            this.모달잠금 = false;
         },
         모달창닫기() {
             this.모달띄움 = false;
@@ -198,6 +207,7 @@ export default {
             var 임시저장소 = JSON.stringify(this.메모.내용);
             localStorage.setItem("memo", 임시저장소);
             localStorage.setItem("title", JSON.stringify(this.메모.제목));
+            localStorage.setItem("titleLength", JSON.stringify(this.메모.제목글자수제한));
         },
         투두스토리지저장() {
             localStorage.setItem("todo", JSON.stringify(this.할일.내용));
@@ -217,16 +227,12 @@ export default {
         }
         if (typeof localStorage.memo !== "undefined") {
             this.메모.내용 = JSON.parse(localStorage.getItem("memo"));
-        }
-        if (typeof localStorage.title !== "undefined") {
             this.메모.제목 = JSON.parse(localStorage.getItem("title"));
+            this.메모.제목글자수제한 = JSON.parse(localStorage.getItem("titleLength"));
         }
         if (typeof localStorage.todo !== "undefined") {
             this.할일.내용 = JSON.parse(localStorage.getItem("todo"));
             this.할일.할일스위치 = JSON.parse(localStorage.getItem("todoSwitch"));
-        }
-        if (typeof localStorage.lineThrough !== "undefined") {
-            this.할일.라인쓰루 = JSON.parse(localStorage.getItem("lineThrough"));
         }
     } /* 마운티드 끝나요 */,
 

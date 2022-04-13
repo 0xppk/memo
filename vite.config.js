@@ -12,6 +12,6 @@ export default defineConfig({
     }),
   ],
 
-  base: '/note'
+  base: '/note/'
 
 })
